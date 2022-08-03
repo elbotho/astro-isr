@@ -1,5 +1,5 @@
 {
-  "name": "vercel-isr-adapter-unchanged",
+  "name": "vercel-isr-adapter-changed",
   "description": "Deploy your site to Vercel",
   "version": "0.4.3",
   "type": "module",

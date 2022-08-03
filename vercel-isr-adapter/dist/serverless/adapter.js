@@ -51,6 +51,15 @@ function vercelEdge() {
           handler: serverEntry,
           launcherType: "Nodejs",
         });
+        await writeJson(
+          new URL(`./functions/render.prerender-config.json`, _config.outDir),
+          {
+            expiration: 60,
+            group: 1,
+            bypassToken: "VeryLongAndVerySecretBypassToken",
+            allowQuery: undefined, // "If undefined each unique query value is cached independently"
+          }
+        );
         await writeJson(new URL(`./config.json`, _config.outDir), {
           version: 3,
           routes: [
