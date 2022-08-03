@@ -1,7 +1,7 @@
 {
   "name": "vercel-isr-adapter",
   "description": "Deploy your site to Vercel",
-  "version": "0.4.0isr",
+  "version": "0.4.2",
   "type": "module",
   "author": "withastro",
   "license": "MIT",

@@ -58,6 +58,13 @@ function vercelEdge() {
             group: 1,
             bypassToken: "VeryLongAndVerySecretBypassToken",
             allowQuery: undefined, // "If undefined each unique query value is cached independently"
+            fallback: "render.prerender-fallback.html",
+          }
+        );
+        await writeJson(
+          new URL(`../render.prerender-fallback.html`, functionFolder),
+          {
+            oneMoment: "Please",
           }
         );
         await writeJson(new URL(`./config.json`, _config.outDir), {
