@@ -56,7 +56,7 @@ function vercelEdge() {
           {
             expiration: false, // never update without cache invalidation
             group: 1,
-            bypassToken: "secretBypassToken",
+            bypassToken: "VeryLongAndVerySecretBypassToken",
             allowQuery: undefined, // "If undefined each unique query value is cached independently"
           }
         );
