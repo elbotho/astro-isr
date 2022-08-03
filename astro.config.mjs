@@ -57,10 +57,8 @@ function vercelEdge() {
         await writeJson(
           new URL(`./functions/render.prerender-config.json`, _config.outDir),
           {
-            expiration: 60,
-            group: 1,
-            bypassToken: "VeryLongAndVerySecretBypassToken",
-            allowQuery: undefined, // "If undefined each unique query value is cached independently"
+            expiration: 5,
+            allowQuery: [],
           }
         );
         await writeJson(new URL(`./config.json`, _config.outDir), {
