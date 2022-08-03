@@ -1,5 +1,5 @@
 import { defineConfig } from "astro/config";
-import vercel from "vercel-isr-adapter/serverless";
+import vercel from "vercel-isr-adapter-unchanged/serverless";
 
 // https://astro.build/config
 export default defineConfig({
