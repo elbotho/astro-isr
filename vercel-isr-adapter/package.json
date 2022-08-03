@@ -1,0 +1,49 @@
+{
+  "name": "vercel-isr-adapter",
+  "description": "Deploy your site to Vercel",
+  "version": "0.4.0isr",
+  "type": "module",
+  "author": "withastro",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "directory": "packages/integrations/vercel"
+  },
+  "keywords": [
+    "astro-adapter"
+  ],
+  "exports": {
+    "./edge": "./dist/edge/adapter.js",
+    "./edge/entrypoint": "./dist/edge/entrypoint.js",
+    "./serverless": "./dist/serverless/adapter.js",
+    "./serverless/entrypoint": "./dist/serverless/entrypoint.js",
+    "./static": "./dist/serverless/adapter.js",
+    "./package.json": "./package.json"
+  },
+  "typesVersions": {
+    "*": {
+      "edge": [
+        "dist/edge/adapter.d.ts"
+      ],
+      "serverless": [
+        "dist/serverless/adapter.d.ts"
+      ],
+      "static": [
+        "dist/static/adapter.d.ts"
+      ]
+    }
+  },
+  "dependencies": {
+    "@astrojs/webapi": "^0.12.0",
+    "@vercel/nft": "^0.18.2"
+  },
+  "devDependencies": {
+    "astro": "1.0.0-rc.2",
+    "astro-scripts": "../scripts"
+  },
+  "scripts": {
+    "build": "astro-scripts build \"src/**/*.ts\" && tsc",
+    "build:ci": "astro-scripts build \"src/**/*.ts\"",
+    "dev": "astro-scripts dev \"src/**/*.ts\""
+  }
+}
