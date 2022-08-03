@@ -3558,12 +3558,6 @@ uvu@^0.5.0:
     kleur "^4.0.3"
     sade "^1.7.3"
 
-vercel-isr-adapter-changed@./vercel-isr-adapter:
-  version "0.4.3"
-  dependencies:
-    "@astrojs/webapi" "^0.12.0"
-    "@vercel/nft" "^0.18.2"
-
 vfile-location@^4.0.0:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/vfile-location/-/vfile-location-4.0.1.tgz#06f2b9244a3565bef91f099359486a08b10d3a95"
