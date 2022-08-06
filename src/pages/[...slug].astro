@@ -5,9 +5,9 @@ const url = Astro.url
 
 export function getStaticPaths() {
 	return [
-		{ params: { slug: '1' } },
-		{ params: { slug: '2' } },
-		{ params: { slug: '3' } },
+		{ params: { slug: '1', test: 'test' } },
+		{ params: { slug: '2', test: 'test' } },
+		{ params: { slug: '3', test: 'test' } },
 	];
 }
 ---
