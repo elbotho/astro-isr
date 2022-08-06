@@ -84,7 +84,7 @@ export default function vercelEdge(): AstroIntegration {
           routes: [
             ...getRedirects(routes, _config),
             { handle: "filesystem" },
-            { src: "/(?<slug>[^/]*)", dest: "render?test=123&path=$slug" },
+            { src: "/.*", dest: "render" },
           ],
         });
       },
