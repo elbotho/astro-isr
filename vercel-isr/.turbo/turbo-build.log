@@ -1,0 +1,5 @@
+[32m@astrojs/vercel-isr:build: [0mcache hit, replaying output [2m2e5fc8f198d78737[0m
+[32m@astrojs/vercel-isr:build: [0m
+[32m@astrojs/vercel-isr:build: [0m> @astrojs/vercel-isr@0.0.1 build /Users/botho/Documents/Websites/ASTRO/astro/packages/integrations/vercel-isr
+[32m@astrojs/vercel-isr:build: [0m> astro-scripts build "src/**/*.ts" && tsc
+[32m@astrojs/vercel-isr:build: [0m

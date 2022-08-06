@@ -9,8 +9,9 @@
     "preview": "astro preview"
   },
   "devDependencies": {
-    "@astrojs/vercel": "^0.4.0",
     "astro": "^1.0.0-rc.7"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@astrojs/vercel-isr": "./vercel-isr/"
+  }
 }
