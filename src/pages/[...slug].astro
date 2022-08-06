@@ -1,5 +1,15 @@
 ---
 const dateString = new Date().toUTCString()
+const params = Astro.params
+const url = Astro.url
+
+export function getStaticPaths() {
+	return [
+		{ params: { slug: '1' } },
+		{ params: { slug: '2' } },
+		{ params: { slug: '3' } },
+	];
+}
 ---
 
 <html lang="en">
@@ -14,7 +24,9 @@ const dateString = new Date().toUTCString()
 	style="display: flex; font-family:system-ui; align-items: center; justify-content: center; height: 90vh; text-align: center; background: #337; color:#ddd;">
 	<main>
 		<h1>👋 Freshly rendered for you</h1><br />
-		on {dateString}
+		on {dateString}<br /><br />
+		requested with {JSON.stringify(params)}<br />
+		{url}
 	</main>
 </body>
 
