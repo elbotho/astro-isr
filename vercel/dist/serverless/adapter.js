@@ -6,7 +6,7 @@ function getAdapter() {
   return {
     name: PACKAGE_NAME,
     serverEntrypoint: `${PACKAGE_NAME}/entrypoint`,
-    exports: ["default"]
+    exports: ["default"],
   };
 }
 function vercelEdge() {
@@ -32,33 +32,43 @@ function vercelEdge() {
       "astro:build:start": async ({ buildConfig }) => {
         buildConfig.serverEntry = serverEntry = "entry.js";
         buildConfig.client = new URL("./static/", _config.outDir);
-        buildConfig.server = functionFolder = new URL("./functions/render.func/", _config.outDir);
+        buildConfig.server = functionFolder = new URL(
+          "./functions/render.func/",
+          _config.outDir
+        );
       },
       "astro:build:done": async ({ routes }) => {
-        await copyDependenciesToFunction(_config.root, functionFolder, serverEntry);
+        await copyDependenciesToFunction(
+          _config.root,
+          functionFolder,
+          serverEntry
+        );
         await writeJson(new URL(`./package.json`, functionFolder), {
-          type: "module"
+          type: "module",
         });
         await writeJson(new URL(`./.vc-config.json`, functionFolder), {
           runtime: getRuntime(),
           handler: serverEntry,
-          launcherType: "Nodejs"
+          launcherType: "Nodejs",
         });
-        await writeJson(new URL(`./functions/render.prerender-config.json`, _config.outDir), {
-          expiration: 60,
-          bypassToken: "VeryLongAndVerySecretBypassToken",
-          allowQuery: void 0
-        });
+        await writeJson(
+          new URL(`./functions/render.prerender-config.json`, _config.outDir),
+          {
+            expiration: 60,
+            bypassToken: "VeryLongAndVerySecretBypassToken",
+            allowQuery: void 0,
+          }
+        );
         await writeJson(new URL(`./config.json`, _config.outDir), {
           version: 3,
           routes: [
             ...getRedirects(routes, _config),
             { handle: "filesystem" },
-            { src: "/.*", dest: "render" }
-          ]
+            { src: "/(?<slug>[^/]*)", dest: "render?path=$slug" },
+          ],
         });
-      }
-    }
+      },
+    },
   };
 }
 function getRuntime() {
@@ -66,6 +76,4 @@ function getRuntime() {
   const major = version.split(".")[0];
   return `nodejs${major}.x`;
 }
-export {
-  vercelEdge as default
-};
+export { vercelEdge as default };
