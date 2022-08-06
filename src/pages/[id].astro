@@ -2,6 +2,8 @@
 const dateString = new Date().toUTCString()
 const params = Astro.params
 const url = Astro.url
+const headers = Astro.request.headers
+
 ---
 
 <html lang="en">
@@ -18,7 +20,8 @@ const url = Astro.url
 		<h1>👋 Freshly rendered for you</h1><br />
 		on {dateString}<br /><br />
 		requested with {JSON.stringify(params)}<br />
-		{url}
+		{url}<br />
+		{JSON.stringify(headers)}
 	</main>
 </body>
 
