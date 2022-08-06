@@ -2,14 +2,6 @@
 const dateString = new Date().toUTCString()
 const params = Astro.params
 const url = Astro.url
-
-export function getStaticPaths() {
-	return [
-		{ params: { slug: '1' } },
-		{ params: { slug: '2' } },
-		{ params: { slug: '3' } },
-	];
-}
 ---
 
 <html lang="en">
