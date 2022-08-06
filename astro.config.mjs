@@ -1,9 +1,14 @@
 import { defineConfig } from "astro/config";
 import { polyfill } from "@astrojs/webapi";
-import { App } from "astro/app";
-import { Readable } from "node:stream";
+import { nodeFileTrace } from "@vercel/nft";
+import * as fs from "node:fs/promises";
+import { fileURLToPath } from "node:url";
 
-const PACKAGE_NAME = "@astrojs/vercel/serverless";
+// https://astro.build/config
+export default defineConfig({
+  output: "server",
+  adapter: vercelEdge(),
+});
 
 function getAdapter() {
   return {
@@ -83,103 +88,6 @@ function getRuntime() {
 polyfill(globalThis, {
   exclude: "window document",
 });
-const createExports = (manifest) => {
-  const app = new App(manifest);
-  const handler = async (req, res) => {
-    let request;
-    try {
-      request = await getRequest(`https://${req.headers.host}`, req);
-    } catch (err) {
-      res.statusCode = err.status || 400;
-      return res.end(err.reason || "Invalid request body");
-    }
-    let routeData = app.match(request, { matchNotFound: true });
-    if (!routeData) {
-      res.statusCode = 404;
-      return res.end("Not found");
-    }
-    await setResponse(res, await app.render(request, routeData));
-  };
-  return { default: handler };
-};
-
-const clientAddressSymbol = Symbol.for("astro.clientAddress");
-function get_raw_body(req) {
-  return new Promise((fulfil, reject) => {
-    const h = req.headers;
-    if (!h["content-type"]) {
-      return fulfil(null);
-    }
-    req.on("error", reject);
-    const length = Number(h["content-length"]);
-    if (isNaN(length) && h["transfer-encoding"] == null) {
-      return fulfil(null);
-    }
-    let data = new Uint8Array(length || 0);
-    if (length > 0) {
-      let offset = 0;
-      req.on("data", (chunk) => {
-        const new_len = offset + Buffer.byteLength(chunk);
-        if (new_len > length) {
-          return reject({
-            status: 413,
-            reason: 'Exceeded "Content-Length" limit',
-          });
-        }
-        data.set(chunk, offset);
-        offset = new_len;
-      });
-    } else {
-      req.on("data", (chunk) => {
-        const new_data = new Uint8Array(data.length + chunk.length);
-        new_data.set(data, 0);
-        new_data.set(chunk, data.length);
-        data = new_data;
-      });
-    }
-    req.on("end", () => {
-      fulfil(data);
-    });
-  });
-}
-async function getRequest(base, req) {
-  let headers = req.headers;
-  if (req.httpVersionMajor === 2) {
-    headers = Object.assign({}, headers);
-    delete headers[":method"];
-    delete headers[":path"];
-    delete headers[":authority"];
-    delete headers[":scheme"];
-  }
-  const request = new Request(base + req.url, {
-    method: req.method,
-    headers,
-    body: await get_raw_body(req),
-  });
-  Reflect.set(request, clientAddressSymbol, headers["x-forwarded-for"]);
-  return request;
-}
-async function setResponse(res, response) {
-  const headers = Object.fromEntries(response.headers);
-  if (response.headers.has("set-cookie")) {
-    headers["set-cookie"] = response.headers.raw()["set-cookie"];
-  }
-  res.writeHead(response.status, headers);
-  if (response.body instanceof Readable) {
-    response.body.pipe(res);
-  } else {
-    if (response.body) {
-      res.write(await response.arrayBuffer());
-    }
-    res.end();
-  }
-}
-
-// https://astro.build/config
-export default defineConfig({
-  output: "server",
-  adapter: vercelEdge(),
-});
 
 async function writeJson(path, data) {
   await fs.writeFile(path, JSON.stringify(data), { encoding: "utf-8" });
@@ -191,9 +99,6 @@ async function emptyDir(dir) {
 const getVercelOutput = (root) => new URL("./.vercel/output/", root);
 export { emptyDir, getVercelOutput, writeJson };
 
-import { nodeFileTrace } from "@vercel/nft";
-import * as fs from "node:fs/promises";
-import { fileURLToPath } from "node:url";
 async function copyDependenciesToFunction(root, functionFolder, serverEntry) {
   const entryPath = fileURLToPath(new URL(`./${serverEntry}`, functionFolder));
   const result = await nodeFileTrace([entryPath], {
