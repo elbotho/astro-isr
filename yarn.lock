@@ -95,7 +95,7 @@
     which-pm-runs "^1.1.0"
 
 "@astrojs/vercel@./vercel":
-  version "0.4.0"
+  version "0.4.0-b"
   dependencies:
     "@astrojs/webapi" "^0.12.0"
     "@vercel/nft" "^0.18.2"
